@@ -14,6 +14,29 @@ Rails seeks to simplify application development by removing options and decision
 
 Researched answer:
 
+Specific commands for performing the above operations:
+1. Generate a migration
+```console
+rails g migration add_cohort_id_to_student
+```
+
+1. Navigate to the new .rb in the migration folder, and add the below line
+```ruby
+add_column :student, :cohort_id, :integer
+```
+1. Navigate to the Cohort class and add the below line
+```ruby
+has_many :students
+```
+1. Navigate to the Student class and add the below line
+```ruby
+belongs_to :cohort
+```
+1. Perform the migration in the console.
+```console
+rails db:migrate
+```
+
 2. Which RESTful routes must always be passed params? Why?
 
 Your answer:
@@ -24,7 +47,7 @@ PUT - Requires params to update the record in the model. Without params, what is
 PATCH - Requires params to update the record in the model. Without params, what is being updated?
 DELETE - Requires params to destroy a record in the model. Without params, would it destroy the entire model?
 
-Researched answer:
+Researched answer: The best way to determine when params are required and, more importantly, which params are required is to review the API documentation of an application/database. Good documentation should list out the available/optional and the required params for each request. This is like reading the instruction manual for a classic video game - you'll learn all sorts of button commands that provide useful commands or "cheat codes" for the uninitiated.
 
 3. Name three rails generator commands. What is created by each?
 
@@ -46,7 +69,25 @@ rails g controller ControllerName
 ```
 Following the controller-route-view (CRV) pathway, a controller allows the development team to define methods for interacting with a model. These methods can define general or specific quieries or allow cross-model interactions. As an object-based system, the Rails application instantiates one or more controller objects to process these requests from the server.
 
-Researched answer:
+Researched answer: Researching on other generator commands, the following seems like the standard list:
+* assets
+* channel
+* controller
+* generator
+* helper
+* integration_test
+* jbuilder
+* job
+* mailer
+* migration
+* model
+* resource
+* scaffold
+* scaffold_controller
+* system_test
+* test
+
+Additionally, developers can create custom generators. These can provide a wide variety of functions that generally automate repetitive actions.
 
 4. Consider the Rails routes below. What is the name of the controller method that would be called by each route? What action would each of the controller methods perform?
 

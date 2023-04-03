@@ -22,9 +22,10 @@ describe("decodeObject", () => {
       { name: "arthur dent", occupation: "a radio employee" }
       ]
       // Expected output: ["Ford Prefect is a hitchhiker.", "Zaphod Beeblebrox is president of the galaxy.", "Arthur Dent is a radio employee."]
+      output1 = ["Ford Prefect is a hitchhiker.", "Zaphod Beeblebrox is president of the galaxy.", "Arthur Dent is a radio employee."]
 
       it("takes in an array of objects and returns an array with a sentence", () => {
-            expect(decodeObject(people)).toEqual(["Ford Prefect is a hitchhiker.", "Zaphod Beeblebrox is president of the galaxy.", "Arthur Dent is a radio employee."])
+            expect(dObject(people)).toEqual(output1)
       })
 })
 
@@ -52,6 +53,10 @@ const decodeObject = (arr) => {
 // Ran all test suites.
 // ✨  Done in 1.34s.
 
+// Refactor to one line.
+
+const dObject = (arr) => arr.map(obj => `${obj['name'].split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')} is ${obj['occupation']}.`)
+
 // --------------------2) Create a function that takes in a mixed data array and returns an array of only the REMAINDERS of the numbers when divided by 3.
 
 // a) Create a test with an expect statement using the variables provided.
@@ -67,6 +72,20 @@ describe("remainder3", () => {
       it("takes in a mixed data array and returns an array ", () => {
             expect(remainder3(hodgepodge1)).toEqual(output1)
             expect(remainder3(hodgepodge2)).toEqual(output2)
+      })
+})
+
+describe("remain3", () => {
+      const hodgepodge1 = [23, "Heyyyy!", 45, -10, 0, "Yo", false]
+      // Expected output: [ 2, 0, -1, 0 ]
+      const output1 = [ 2, 0, -1, 0 ]
+      const hodgepodge2 = [5, "Hola", 43, -34, "greetings", true]
+      // Expected output: [ 2, 1, -1 ]
+      const output2 = [ 2, 1, -1 ]
+
+      it("takes in a mixed data array and returns an array ", () => {
+            expect(c3(hodgepodge1)).toEqual(output1)
+            expect(c3(hodgepodge2)).toEqual(output2)
       })
 })
 
@@ -93,6 +112,24 @@ const remainder3 = (arr) => {
 // Ran all test suites.
 // ✨  Done in 1.92s.
 
+// Calling .map after .filter is somewhat messy. Let's look at a terniary operation to combine the logic of .map into the original .filter call:
+
+const remain3 = (arr) => {
+      return arr.filter(e => 'number' == typeof e ? e % 3 : false)
+}
+
+// Disgregard above. Not working. The filter maintains the previous values and does not allow modification. Let's try using reduce instead.
+
+const r3 = (arr) => arr.reduce((acc, e) => {
+      'number' == typeof e ? acc.push(e % 3) : false
+      return acc}, [])
+
+// Reduce needs the accumulator to return after each iteraction. Using terniary operator to determine whether to push a new element based on criteria or doing nothing seems to present a barrier. Unfortunately, the .push() method returns the new length of the array. This limits options to insert an element to the accumulator while leveraging implicit return in an arrow function to meet my arbitrary goal of reducing the code to a single line. .concat(), however...
+
+const c3 = (arr) => arr.reduce((acc, e) => 'number' == typeof e ? acc.concat(e % 3) : acc, [])
+
+// success.
+
 // --------------------3) Create a function that takes in an array of numbers and returns the sum of all the numbers cubed.
 
 // a) Create a test with an expect statement using the variables provided.
@@ -106,8 +143,8 @@ describe("cubeSum", () => {
       const output2 = 1125
 
       it("takes in an array of numbers and returns the sum of all the numbers cubed", () => {
-            expect(cubeSum(cubeAndSum1)).toEqual(output1)
-            expect(cubeSum(cubeAndSum2)).toEqual(output2)
+            expect(cSum(cubeAndSum1)).toEqual(output1)
+            expect(cSum(cubeAndSum2)).toEqual(output2)
       })
 })
 
@@ -131,3 +168,6 @@ const cubeSum = (arr) => {
 // Time:        0.349 s
 // Ran all test suites.
 // ✨  Done in 1.71s.
+
+// Refactor to one-line:
+const cSum = (arr) => arr.reduce((acc, num) => acc + num ** 3,0)
